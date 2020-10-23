@@ -47,7 +47,10 @@ def process_log_file(cur, filepath):
     time_df = pd.DataFrame.from_dict(dict_data)
 
     for i, row in time_df.iterrows():
-        cur.execute(time_table_insert, list(row))
+        try:
+            cur.execute(time_table_insert, list(row))
+        except Exception as e:
+            print(e)
 
     # load user table
     user_df = df[["userId", "firstName", "lastName", "gender", "level"]]
@@ -70,7 +73,10 @@ def process_log_file(cur, filepath):
 
         # insert songplay record
         songplay_data = (row.ts, row.userId, row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
-        cur.execute(songplay_table_insert, songplay_data)
+        try:
+            cur.execute(songplay_table_insert, songplay_data)
+        except Exception as e:
+            print(e)
 
 
 def process_data(cur, conn, filepath, func):
@@ -95,6 +101,7 @@ def process_data(cur, conn, filepath, func):
 def main():
     create_database();
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
+    conn.autocommit = True
     cur = conn.cursor()
 
     # create
