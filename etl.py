@@ -36,13 +36,13 @@ def process_log_file(cur, filepath):
     t = pd.to_datetime(df.ts, unit="ms")
     
     # insert time data records
-    dt = t.dt;
-    time_data = (df.ts, dt.hour, dt.day, dt.week, dt.month, dt.year, dt.weekday)
+    dt = t.dt
+    time_data = (df.ts, dt.hour, dt.day, dt.isocalendar().week, dt.month, dt.year, dt.weekday)
     column_labels = ('timestamp', 'hour', 'day', 'week', 'month', 'year', 'weekday') 
 
     dict_data = {}; #make dict
     for k,v in zip(column_labels,time_data):
-        dict_data[k]= v.values.flatten().tolist()
+        dict_data[k]= v.tolist()
 
     time_df = pd.DataFrame.from_dict(dict_data)
 
