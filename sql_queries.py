@@ -11,11 +11,11 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
   CREATE TABLE songplays 
   ( songplay_id SERIAL PRIMARY KEY,
-    start_time BIGINT UNIQUE,
-    user_id INTEGER UNIQUE,
+    start_time BIGINT,
+    user_id INTEGER,
     level VARCHAR(10),
-    song_id VARCHAR UNIQUE,
-    artist_id VARCHAR UNIQUE,
+    song_id VARCHAR,
+    artist_id VARCHAR,
     session_id VARCHAR,
     location VARCHAR,
     user_agent VARCHAR);
@@ -71,8 +71,7 @@ INSERT INTO songplays
     session_id,
     location,
     user_agent)
-VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-ON CONFLICT(start_time) DO NOTHING;
+VALUES ( %s, %s, %s, %s, %s, %s, %s, %s);
 """)
 
 user_table_insert = ("""
@@ -91,26 +90,23 @@ INSERT INTO songs
       year,
       duration)
 VALUES
-    (%s, %s, %s, %s, %s)
-ON CONFLICT(song_id) DO NOTHING;
-""")
+    (%s, %s, %s, %s, %s);
+    """)
 
 artist_table_insert = ("""
 INSERT INTO artists
     (artist_id, name, location, latitude, longitude)
 VALUES
-    (%s, %s, %s, %s, %s)
-ON CONFLICT(artist_id) DO NOTHING;;
-""")
+    (%s, %s, %s, %s, %s);
+    """)
 
 
 time_table_insert = ("""
 INSERT INTO time
     (start_time, hour, day, week, month, year, weekday)
 VALUES 
-    (%s, %s, %s, %s, %s, %s, %s)
-ON CONFLICT (start_time) DO NOTHING;
-""")
+    (%s, %s, %s, %s, %s, %s, %s);
+    """)
 
 # FIND SONGS
 
